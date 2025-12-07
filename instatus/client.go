@@ -31,6 +31,7 @@ type Component struct {
 	Grouped      bool                   `json:"grouped"`
 	GroupID      string                 `json:"group,omitempty"`      // For create requests
 	GroupIDRead  string                 `json:"groupId,omitempty"`    // For update requests and reads
+	GroupName    string                 `json:"-"`                    // Computed field for display
 	Archived     bool                   `json:"archived"`
 	UniqueEmail  string                 `json:"uniqueEmail,omitempty"`
 	Translations map[string]interface{} `json:"translations,omitempty"`
@@ -155,6 +156,11 @@ func (c *Client) GetComponent(componentID string) (*Component, error) {
 		GroupIDRead: resp.GroupID,
 		Archived:    resp.Archived,
 		UniqueEmail: resp.UniqueEmail,
+	}
+
+	// Extract group name if present
+	if resp.Group != nil {
+		component.GroupName = resp.Group.Name
 	}
 
 	return component, nil

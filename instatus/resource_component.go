@@ -59,6 +59,11 @@ func resourceComponent() *schema.Resource {
 				Optional:    true,
 				Description: "The ID of the parent group (if grouped is true)",
 			},
+			"group_name": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The name of the parent group (read-only)",
+			},
 			"archived": {
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -137,6 +142,9 @@ func resourceComponentRead(ctx context.Context, d *schema.ResourceData, meta int
 		return diag.FromErr(err)
 	}
 	if err := d.Set("group_id", component.GroupIDRead); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("group_name", component.GroupName); err != nil {
 		return diag.FromErr(err)
 	}
 
