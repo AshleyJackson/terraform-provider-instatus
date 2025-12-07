@@ -193,6 +193,11 @@ func (c *Client) UpdateComponent(componentID string, component *Component) (*Com
 		UniqueEmail: resp.UniqueEmail,
 	}
 
+	// Extract group name if present
+	if resp.Group != nil {
+		updated.GroupName = resp.Group.Name
+	}
+
 	return updated, nil
 }
 

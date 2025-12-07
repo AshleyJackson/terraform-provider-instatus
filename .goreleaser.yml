@@ -12,19 +12,10 @@ builds:
       - '-s -w -X main.version={{.Version}}'
     goos:
       - darwin
-      - freebsd
       - linux
-      - windows
     goarch:
       - amd64
-      - '386'
-      - arm
       - arm64
-    ignore:
-      - goos: darwin
-        goarch: '386'
-      - goos: darwin
-        goarch: arm
     binary: '{{ .ProjectName }}_v{{ .Version }}'
 
 archives:
