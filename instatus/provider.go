@@ -18,24 +18,18 @@ func Provider() *schema.Provider {
 				DefaultFunc: schema.EnvDefaultFunc("INSTATUS_API_KEY", nil),
 				Description: "The API key for Instatus API authentication",
 			},
-			"page_id": {
-				Type:        schema.TypeString,
-				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("INSTATUS_PAGE_ID", nil),
-				Description: "The Instatus status page ID",
-			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"instatus_component": resourceComponent(),
+			"instatus_page":      resourcePage(),
 		},
-		DataSourcesMap: map[string]*schema.Resource{},
+		DataSourcesMap:       map[string]*schema.Resource{},
 		ConfigureContextFunc: providerConfigure,
 	}
 }
 
 func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
 	apiKey := d.Get("api_key").(string)
-	pageID := d.Get("page_id").(string)
 
 	var diags diag.Diagnostics
 
@@ -47,19 +41,11 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		})
 	}
 
-	if pageID == "" {
-		diags = append(diags, diag.Diagnostic{
-			Severity: diag.Error,
-			Summary:  "Missing Page ID",
-			Detail:   "Page ID must be provided via the page_id provider argument or INSTATUS_PAGE_ID environment variable",
-		})
-	}
-
 	if diags.HasError() {
 		return nil, diags
 	}
 
-	client := NewClient(apiKey, pageID)
+	client := NewClient(apiKey)
 
 	return client, diags
 }

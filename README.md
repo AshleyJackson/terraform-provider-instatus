@@ -16,7 +16,6 @@ A Terraform provider for managing [Instatus](https://instatus.com) status page c
 - [Terraform](https://www.terraform.io/downloads.html) >= 1.0
 - [Go](https://golang.org/doc/install) >= 1.21 (for development)
 - Instatus API Key
-- Instatus Page ID
 
 ## Installation
 
@@ -24,7 +23,7 @@ A Terraform provider for managing [Instatus](https://instatus.com) status page c
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/udarvpsinu/terraform-provider-instatus.git
+git clone https://github.com/ashleyjackson/terraform-provider-instatus.git
 cd terraform-provider-instatus
 ```
 
@@ -35,8 +34,8 @@ go build -o terraform-provider-instatus
 
 3. Install the provider locally:
 ```bash
-mkdir -p ~/.terraform.d/plugins/registry.terraform.io/udarvpsinu/instatus/0.1.0/darwin_arm64
-cp terraform-provider-instatus ~/.terraform.d/plugins/registry.terraform.io/udarvpsinu/instatus/0.1.0/darwin_arm64/
+mkdir -p ~/.terraform.d/plugins/registry.terraform.io/ashleyjackson/instatus/0.1.0/darwin_arm64
+cp terraform-provider-instatus ~/.terraform.d/plugins/registry.terraform.io/ashleyjackson/instatus/0.1.0/darwin_arm64/
 ```
 
 Note: Replace `darwin_arm64` with your OS/architecture:
@@ -53,7 +52,7 @@ Note: Replace `darwin_arm64` with your OS/architecture:
 terraform {
   required_providers {
     instatus = {
-      source  = "udarvpsinu/instatus"
+      source  = "ashleyjackson/instatus"
       version = "~> 0.1"
     }
   }
@@ -61,7 +60,6 @@ terraform {
 
 provider "instatus" {
   api_key = var.instatus_api_key  # or set INSTATUS_API_KEY env var
-  page_id = var.instatus_page_id  # or set INSTATUS_PAGE_ID env var
 }
 ```
 
@@ -129,13 +127,11 @@ resource "instatus_component" "website" {
 1. Log in to your [Instatus dashboard](https://instatus.com)
 2. Navigate to **Settings** → **API**
 3. Generate an API key
-4. Get your Page ID from the URL or settings
 
 Set as environment variables:
 
 ```bash
 export INSTATUS_API_KEY="your-api-key"
-export INSTATUS_PAGE_ID="your-page-id"
 ```
 
 ## Development

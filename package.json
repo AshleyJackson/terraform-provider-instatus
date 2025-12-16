@@ -1,0 +1,20 @@
+{
+  "name": "instatus_builder",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build:windows": "tsx build.ts windows",
+    "build:linux": "tsx build.ts linux",
+    "build:macos": "tsx build.ts macos",
+    "build:all": "npm run build:windows && npm run build:linux && npm run build:macos"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^25.0.2",
+    "tsx": "^4.21.0"
+  }
+}

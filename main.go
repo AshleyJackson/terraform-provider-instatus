@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/udarvpsinu/terraform-provider-instatus/instatus"
+	"github.com/ashleyjackson/terraform-provider-instatus/instatus"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
 )
 

@@ -85,6 +85,7 @@ func resourceComponentCreate(ctx context.Context, d *schema.ResourceData, meta i
 
 	component := &Component{
 		Name:        d.Get("name").(string),
+		PageId:      d.Get("page_id").(string),
 		Description: d.Get("description").(string),
 		Status:      d.Get("status").(string),
 		ShowUptime:  d.Get("show_uptime").(bool),
@@ -116,12 +117,15 @@ func resourceComponentRead(ctx context.Context, d *schema.ResourceData, meta int
 	client := meta.(*Client)
 	var diags diag.Diagnostics
 
-	component, err := client.GetComponent(d.Id())
+	component, err := client.GetComponent(d.Id(), d.Get("page_id").(string))
 	if err != nil {
 		return diag.FromErr(fmt.Errorf("error reading component: %w", err))
 	}
 
 	if err := d.Set("name", component.Name); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("page_id", component.PageId); err != nil {
 		return diag.FromErr(err)
 	}
 	if err := d.Set("description", component.Description); err != nil {
@@ -188,7 +192,7 @@ func resourceComponentDelete(ctx context.Context, d *schema.ResourceData, meta i
 	client := meta.(*Client)
 	var diags diag.Diagnostics
 
-	err := client.DeleteComponent(d.Id())
+	err := client.DeleteComponent(d.Id(), d.Get("page_id").(string))
 	if err != nil {
 		return diag.FromErr(fmt.Errorf("error deleting component: %w", err))
 	}

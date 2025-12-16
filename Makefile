@@ -19,7 +19,7 @@ ifeq ($(UNAME_M),x86_64)
 endif
 
 BINARY_NAME := terraform-provider-instatus
-INSTALL_PATH := ~/.terraform.d/plugins/registry.terraform.io/udarvpsinu/instatus/0.1.0/$(OS)_$(ARCH)
+INSTALL_PATH := ~/.terraform.d/plugins/registry.terraform.io/ashleyjackson/instatus/0.1.0/$(OS)_$(ARCH)
 
 .PHONY: help build install test clean fmt vet
 

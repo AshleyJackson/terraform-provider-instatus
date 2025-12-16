@@ -1,4 +1,4 @@
-module github.com/udarvpsinu/terraform-provider-instatus
+module github.com/ashleyjackson/terraform-provider-instatus
 
 go 1.21
 

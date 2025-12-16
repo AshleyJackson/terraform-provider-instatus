@@ -15,7 +15,7 @@ The Instatus provider allows you to manage [Instatus](https://instatus.com) stat
 terraform {
   required_providers {
     instatus = {
-      source  = "udarvpsinu/instatus"
+      source  = "ashleyjackson/instatus"
       version = "~> 0.1"
     }
   }
@@ -23,19 +23,17 @@ terraform {
 
 provider "instatus" {
   api_key = var.instatus_api_key
-  page_id = var.instatus_page_id
 }
 ```
 
 ## Authentication
 
-The provider requires an Instatus API key and Page ID. These can be provided in two ways:
+The provider requires an Instatus API key. These can be provided in two ways:
 
 ### Environment Variables
 
 ```bash
 export INSTATUS_API_KEY="your-api-key"
-export INSTATUS_PAGE_ID="your-page-id"
 ```
 
 ### Provider Configuration
@@ -43,7 +41,6 @@ export INSTATUS_PAGE_ID="your-page-id"
 ```terraform
 provider "instatus" {
   api_key = "your-api-key"
-  page_id = "your-page-id"
 }
 ```
 
@@ -52,14 +49,12 @@ provider "instatus" {
 1. Log in to your [Instatus dashboard](https://instatus.com)
 2. Navigate to **Settings** → **API**
 3. Generate an API key
-4. Get your Page ID from the URL or settings
 
 ## Schema
 
 ### Required
 
 - `api_key` (String, Sensitive) - Instatus API key for authentication
-- `page_id` (String) - Instatus page ID to manage components for
 
 ## Resources
 

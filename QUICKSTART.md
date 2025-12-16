@@ -30,7 +30,7 @@ terraform-provider-instatus/
 ✅ **UPDATE** - Update component properties
 ✅ **DELETE** - Delete components
 ✅ **Nested Components** - Support for 3-level hierarchies (parent → child → grandchild)
-✅ **Environment Variables** - Configure via `INSTATUS_API_KEY` and `INSTATUS_PAGE_ID`
+✅ **Environment Variables** - Configure via `INSTATUS_API_KEY`
 
 ## API Compatibility
 
@@ -47,8 +47,8 @@ go build -o terraform-provider-instatus
 ## Installing Locally
 
 ```bash
-mkdir -p ~/.terraform.d/plugins/registry.terraform.io/udarvpsinu/instatus/0.1.0/darwin_arm64
-cp terraform-provider-instatus ~/.terraform.d/plugins/registry.terraform.io/udarvpsinu/instatus/0.1.0/darwin_arm64/
+mkdir -p ~/.terraform.d/plugins/registry.terraform.io/ashleyjackson/instatus/0.1.0/darwin_arm64
+cp terraform-provider-instatus ~/.terraform.d/plugins/registry.terraform.io/ashleyjackson/instatus/0.1.0/darwin_arm64/
 ```
 
 ## Usage Example
@@ -57,7 +57,6 @@ cp terraform-provider-instatus ~/.terraform.d/plugins/registry.terraform.io/udar
 
 ```bash
 export INSTATUS_API_KEY="your-api-key"
-export INSTATUS_PAGE_ID="your-page-id"
 ```
 
 ### 2. Create Terraform Configuration
@@ -66,14 +65,14 @@ export INSTATUS_PAGE_ID="your-page-id"
 terraform {
   required_providers {
     instatus = {
-      source  = "udarvpsinu/instatus"
+      source  = "ashleyjackson/instatus"
       version = "~> 0.1"
     }
   }
 }
 
 provider "instatus" {
-  # Uses INSTATUS_API_KEY and INSTATUS_PAGE_ID environment variables
+  # Uses INSTATUS_API_KEY environment variables
 }
 
 # Simple component
@@ -185,7 +184,6 @@ func dataSourceComponent() *schema.Resource {
 
 ### API Errors
 - Verify `INSTATUS_API_KEY` is set correctly
-- Verify `INSTATUS_PAGE_ID` is set correctly
 - Check API rate limits
 - Ensure you have proper permissions
 
