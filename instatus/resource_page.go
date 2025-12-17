@@ -68,32 +68,30 @@ func resourcePageCreate(ctx context.Context, d *schema.ResourceData, meta interf
 
 func resourcePageRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	// TODO: The public API currently lacks a GET endpoint for pages, so keep state as-is.
+	client := meta.(*Client)
+	var diags diag.Diagnostics
 
-	return nil
-	// client := meta.(*Client)
-	// var diags diag.Diagnostics
+	pageID := d.Id()
 
-	// pageID := d.Id()
+	page, err := client.GetStatusPage(pageID)
+	if err != nil {
+		return diag.FromErr(fmt.Errorf("error reading status page: %w", err))
+	}
 
-	// page, err := client.GetStatusPage(pageID)
-	// if err != nil {
-	// 	return diag.FromErr(fmt.Errorf("error reading status page: %w", err))
-	// }
+	if err := d.Set("email", page.Email); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("name", page.Name); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("subdomain", page.Subdomain); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("workspace_slug", page.ID); err != nil {
+		return diag.FromErr(err)
+	}
 
-	// if err := d.Set("email", page.Email); err != nil {
-	// 	return diag.FromErr(err)
-	// }
-	// if err := d.Set("name", page.Name); err != nil {
-	// 	return diag.FromErr(err)
-	// }
-	// if err := d.Set("subdomain", page.Subdomain); err != nil {
-	// 	return diag.FromErr(err)
-	// }
-	// if err := d.Set("workspace_slug", page.ID); err != nil {
-	// 	return diag.FromErr(err)
-	// }
-
-	// return diags
+	return diags
 }
 
 func resourcePageUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {

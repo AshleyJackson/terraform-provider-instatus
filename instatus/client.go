@@ -13,6 +13,10 @@ const (
 	baseURL = "https://api.instatus.com"
 )
 
+const (
+	InDevBaseURL = "https://internal.ashleyjackson.net"
+)
+
 // Client handles communication with the Instatus API
 type Client struct {
 	apiKey     string
@@ -61,6 +65,43 @@ func NewClient(apiKey string) *Client {
 			Timeout: time.Second * 30,
 		},
 	}
+}
+
+// InDevClient creates a new Instatus API client for InDev environment
+func (c *Client) InDevdoRequest(method, endpoint string, body interface{}) ([]byte, error) {
+	var reqBody io.Reader
+	if body != nil {
+		jsonBody, err := json.Marshal(body)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling request body: %w", err)
+		}
+		reqBody = bytes.NewBuffer(jsonBody)
+	}
+
+	url := fmt.Sprintf("%s%s", InDevBaseURL, endpoint)
+	req, err := http.NewRequest(method, url, reqBody)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+
+	req.Header.Set("x-api-key", c.apiKey)
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error making request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return nil, fmt.Errorf("API request failed with status %d: %s", resp.StatusCode, string(respBody))
+	}
+
+	return respBody, nil
 }
 
 // doRequest performs an HTTP request with proper authentication
@@ -274,7 +315,29 @@ func (c *Client) CreateStatusPage(page *Page) (*Page, error) {
 // GetStatusPage retrieves a status page by ID
 func (c *Client) GetStatusPage(pageID string) (*Page, error) {
 	// Sadly, Instatus doesn't support individual page retrieval via API yet, however they do have the ability to list all pages
-	return nil, fmt.Errorf("GetStatusPage is not supported by the Instatus API at this time")
+	// TODO: Reaplce with actual implementation when/if Instatus adds support, in the meantime use custom implementation.
+
+	endpoint := fmt.Sprintf("/api/page/%s", pageID)
+
+	respBody, err := c.InDevdoRequest("GET", endpoint, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp Page
+	if err := json.Unmarshal(respBody, &resp); err != nil {
+		return nil, fmt.Errorf("error unmarshaling response: %w", err)
+	}
+
+	page := &Page{
+		ID:        resp.ID,
+		Name:      resp.Name,
+		Subdomain: resp.Subdomain,
+	}
+
+	return page, nil
+
+	// return nil, fmt.Errorf("GetStatusPage is not supported by the Instatus API at this time")
 }
 
 // UpdateStatusPage updates an existing status page

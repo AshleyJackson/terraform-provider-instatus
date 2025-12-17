@@ -2,14 +2,32 @@
 
 A Terraform provider for managing [Instatus](https://instatus.com) status page components.
 
+## DO NOT USE THIS IN A PRODUCTION ENVIRONMENT
+
+## Broken
+
+- [ ] Get Individual Status Pages
+  - [ ] A current work around that I have created for this is to use my own endpoint, that intercepts the API Key and the Page ID. It the loops through all pages and does a lookup for the page ID provided.
+
+## Working
+
+- [x] Status Page Creation
+  - [ ] Instatus Fixes their API Endpoint. It spits out useless data that can't be used to effectively track a Status Page.
+
 ## Features
 
-- ✅ Create components
-- ✅ Read component details
-- ✅ Update components
-- ✅ Delete components
-- ✅ Support for nested components (groups)
-- ✅ Support for component status, ordering, and archiving
+- [x] Components
+  - [x] Create components
+  - [x] Read component details
+  - [x] Update components
+  - [x] Delete components
+  - [x] Support for nested components (groups)
+  - [x] Support for component status, ordering, and archiving
+- [ ] Status Pages
+  - [ ] Page Creation
+  - [ ] Page Deletion
+  - [ ] Page Update
+  - [ ] Page Read
 
 ## Requirements
 
@@ -22,23 +40,27 @@ A Terraform provider for managing [Instatus](https://instatus.com) status page c
 ### For Development
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/ashleyjackson/terraform-provider-instatus.git
 cd terraform-provider-instatus
 ```
 
 2. Build the provider:
+
 ```bash
 go build -o terraform-provider-instatus
 ```
 
 3. Install the provider locally:
+
 ```bash
 mkdir -p ~/.terraform.d/plugins/registry.terraform.io/ashleyjackson/instatus/0.1.0/darwin_arm64
 cp terraform-provider-instatus ~/.terraform.d/plugins/registry.terraform.io/ashleyjackson/instatus/0.1.0/darwin_arm64/
 ```
 
 Note: Replace `darwin_arm64` with your OS/architecture:
+
 - macOS (Intel): `darwin_amd64`
 - macOS (Apple Silicon): `darwin_arm64`
 - Linux: `linux_amd64`
@@ -157,6 +179,7 @@ go mod tidy
 ## API Documentation
 
 This provider uses the Instatus API:
+
 - [API Documentation](https://instatus.com/help/api/components)
 - API v1 for CREATE and DELETE operations
 - API v2 for READ and UPDATE operations
