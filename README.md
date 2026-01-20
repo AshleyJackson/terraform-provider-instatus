@@ -1,74 +1,21 @@
 # Terraform Provider for Instatus
 
-A Terraform provider for managing [Instatus](https://instatus.com) status page components.
-
-## DO NOT USE THIS IN A PRODUCTION ENVIRONMENT
-
-## Broken
-
-- [ ] Get Individual Status Pages
-  - [ ] A current work around that I have created for this is to use my own endpoint, that intercepts the API Key and the Page ID. It the loops through all pages and does a lookup for the page ID provided.
-
-## Working
-
-- [x] Status Page Creation
-  - [ ] Instatus Fixes their API Endpoint. It spits out useless data that can't be used to effectively track a Status Page.
-
-## Features
-
-- [x] Components
-  - [x] Create components
-  - [x] Read component details
-  - [x] Update components
-  - [x] Delete components
-  - [x] Support for nested components (groups)
-  - [x] Support for component status, ordering, and archiving
-- [ ] Status Pages
-  - [ ] Page Creation
-  - [ ] Page Deletion
-  - [ ] Page Update
-  - [ ] Page Read
+Manage Instatus status pages and components with Terraform.
 
 ## Requirements
 
 - [Terraform](https://www.terraform.io/downloads.html) >= 1.0
-- [Go](https://golang.org/doc/install) >= 1.21 (for development)
-- Instatus API Key
+- [Go](https://golang.org/doc/install) >= 1.21
 
-## Installation
+## Building The Provider
 
-### For Development
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/ashleyjackson/terraform-provider-instatus.git
+```shell
+git clone https://github.com/ashleyjackson/terraform-provider-instatus
 cd terraform-provider-instatus
+make install
 ```
 
-2. Build the provider:
-
-```bash
-go build -o terraform-provider-instatus
-```
-
-3. Install the provider locally:
-
-```bash
-mkdir -p ~/.terraform.d/plugins/registry.terraform.io/ashleyjackson/instatus/0.1.0/darwin_arm64
-cp terraform-provider-instatus ~/.terraform.d/plugins/registry.terraform.io/ashleyjackson/instatus/0.1.0/darwin_arm64/
-```
-
-Note: Replace `darwin_arm64` with your OS/architecture:
-
-- macOS (Intel): `darwin_amd64`
-- macOS (Apple Silicon): `darwin_arm64`
-- Linux: `linux_amd64`
-- Windows: `windows_amd64`
-
-## Usage
-
-### Provider Configuration
+## Using the Provider
 
 ```hcl
 terraform {
@@ -81,113 +28,53 @@ terraform {
 }
 
 provider "instatus" {
-  api_key = var.instatus_api_key  # or set INSTATUS_API_KEY env var
+  api_key = var.instatus_api_key
+}
+
+resource "instatus_page" "example" {
+  email          = "admin@example.com"
+  name           = "Example Status"
+  workspace_slug = "example"
 }
 ```
 
-### Creating a Simple Component
+## Documentation
 
-```hcl
-resource "instatus_component" "api" {
-  name        = "API Service"
-  description = "Our main API service"
-  status      = "OPERATIONAL"
-  show_uptime = true
-}
-```
-
-### Creating a Nested Component (Group with Children)
-
-```hcl
-# Parent group
-resource "instatus_component" "web_services" {
-  name        = "Web Services"
-  description = "All web-related services"
-  status      = "OPERATIONAL"
-  show_uptime = true
-}
-
-# Child component
-resource "instatus_component" "website" {
-  name        = "Website"
-  description = "Main website"
-  status      = "OPERATIONAL"
-  show_uptime = true
-  grouped     = true
-  group_id    = instatus_component.web_services.id
-}
-```
-
-### Component Status Values
-
-- `OPERATIONAL` - Component is working normally
-- `UNDERMAINTENANCE` - Component is under maintenance
-- `DEGRADEDPERFORMANCE` - Component has degraded performance
-- `PARTIALOUTAGE` - Component has partial outage
-- `MAJOROUTAGE` - Component has major outage
-
-## Resource: instatus_component
-
-### Arguments
-
-- `name` (Required) - The name of the component
-- `description` (Optional) - The description of the component. Default: ""
-- `status` (Optional) - The status of the component. Default: "OPERATIONAL"
-- `show_uptime` (Optional) - Whether to show uptime for this component. Default: true
-- `order` (Optional, Computed) - The order of the component. If not set, will be managed in the Instatus UI. Terraform will read the value from API but won't change it unless explicitly set.
-- `grouped` (Optional) - Whether this component belongs to a group. Default: false
-- `group_id` (Optional) - The ID of the parent group (required if grouped is true)
-- `archived` (Optional) - Whether the component is archived. Default: false
-
-### Attributes
-
-- `id` - The ID of the component
-- `unique_email` - The unique email address for this component (for automation)
-
-## Getting API Credentials
-
-1. Log in to your [Instatus dashboard](https://instatus.com)
-2. Navigate to **Settings** → **API**
-3. Generate an API key
-
-Set as environment variables:
-
-```bash
-export INSTATUS_API_KEY="your-api-key"
-```
+Full documentation is available in the [docs](./docs) directory or on the [Terraform Registry](https://registry.terraform.io/providers/ashleyjackson/instatus/latest/docs).
 
 ## Development
 
-### Building the Provider
+### Local Testing
 
-```bash
-go build -o terraform-provider-instatus
+1. Build and install locally:
+```shell
+make install
+```
+
+2. Create `~/.terraformrc`:
+```hcl
+provider_installation {
+  dev_overrides {
+    "ashleyjackson/instatus" = "/home/ashley/go/bin"
+  }
+  direct {}
+}
+```
+
+3. Run terraform in examples directory:
+```shell
+cd examples
+terraform init
+terraform plan
 ```
 
 ### Running Tests
 
-```bash
-go test ./...
+```shell
+make test
+make testacc
 ```
-
-### Initialize Go Modules
-
-```bash
-go mod tidy
-```
-
-## API Documentation
-
-This provider uses the Instatus API:
-
-- [API Documentation](https://instatus.com/help/api/components)
-- API v1 for CREATE and DELETE operations
-- API v2 for READ and UPDATE operations
 
 ## License
 
-MIT License
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+Mozilla Public License v2.0

@@ -3,7 +3,7 @@ terraform {
     instatus = {
       # Using a local dev override for this
       source = "ashleyjackson/instatus"
-      # version = "~> 0.1"
+      version = "0.1.4"
     }
   }
 }

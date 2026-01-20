@@ -2,12 +2,12 @@
 page_title: "Instatus Provider"
 subcategory: ""
 description: |-
-  Terraform provider for managing Instatus status page components.
+  Terraform provider for managing Instatus status pages and components.
 ---
 
 # Instatus Provider
 
-The Instatus provider allows you to manage [Instatus](https://instatus.com) status page components using Terraform.
+The Instatus provider allows you to manage [Instatus](https://instatus.com) status pages and components using Terraform.
 
 ## Example Usage
 
@@ -28,33 +28,13 @@ provider "instatus" {
 
 ## Authentication
 
-The provider requires an Instatus API key. These can be provided in two ways:
-
-### Environment Variables
-
-```bash
-export INSTATUS_API_KEY="your-api-key"
-```
-
-### Provider Configuration
-
-```terraform
-provider "instatus" {
-  api_key = "your-api-key"
-}
-```
-
-## Getting API Credentials
-
-1. Log in to your [Instatus dashboard](https://instatus.com)
-2. Navigate to **Settings** → **API**
-3. Generate an API key
+The provider requires an API key which can be obtained from your Instatus dashboard.
 
 ## Schema
 
 ### Required
 
-- `api_key` (String, Sensitive) - Instatus API key for authentication
+* `api_key` - (String, Sensitive) Instatus API key for authentication.
 
 ## Resources
 
