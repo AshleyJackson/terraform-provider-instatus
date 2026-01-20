@@ -20,7 +20,7 @@ variable "programs" {
 resource "instatus_page" "pages" {
   for_each = toset(var.programs)
 
-  email          = "ashley@myaffiliates.com"
+  email          = var.email
   workspace_slug = each.value
   name           = "Instatus Page for ${each.value}"
 }

@@ -80,9 +80,6 @@ func resourcePageRead(ctx context.Context, d *schema.ResourceData, meta interfac
 		return diag.FromErr(fmt.Errorf("error reading status page: %w", err))
 	}
 
-	if err := d.Set("email", page.Email); err != nil {
-		return diag.FromErr(err)
-	}
 	if err := d.Set("name", page.Name); err != nil {
 		return diag.FromErr(err)
 	}
