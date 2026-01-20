@@ -38,6 +38,9 @@ resource "instatus_page" "example" {
 }
 ```
 
+## DO NOT USE IN YOUR PRODUCTION ENV
+Please note that due to a lack of singular Get Status Pages and Workspaces API, this uses a custom Internal integration that performs this lookup and provides a quick result.
+
 ## Documentation
 
 Full documentation is available in the [docs](./docs) directory or on the [Terraform Registry](https://registry.terraform.io/providers/ashleyjackson/instatus/latest/docs).
