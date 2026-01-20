@@ -8,20 +8,13 @@ terraform {
   }
 }
 
-variable "instatus_api_key" {
-  description = "Instatus API key"
-  type        = string
-  sensitive   = true
-}
-
-
 provider "instatus" {
   api_key = var.instatus_api_key
 }
 
-# resource "instatus_page" "pages" {
-#   name      = ""
-#   email     = ""
-#   subdomain = ""
-# }
+resource "instatus_page" "pages" {
+  name      = "MyAffiliates Status Page"
+  email     = "ashley@myaffiliates.com"
+  subdomain = "myaffiliates-status"
+}
 

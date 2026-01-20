@@ -253,16 +253,18 @@ func (c *Client) DeleteComponent(componentID string, pageID string) error {
 // Status Page
 // Status Page represents an Instatus status page
 type Page struct {
-	ID         string      `json:"id,omitempty"`
-	Email      string      `json:"email"`
-	Name       string      `json:"name"`
-	Subdomain  string      `json:"subdomain"`
-	Components []Component `json:"components"`
+	StatusPageID string      `json:"id"`
+	WorkspaceID  string      `json:"workspaceId"`
+	Email        string      `json:"email"`
+	Name         string      `json:"name"`
+	Subdomain    string      `json:"workspaceSlug"`
+	Components   []Component `json:"components"`
 }
 
 type PageCreateResponse struct {
-	ID   string `json:"workspaceId"`
-	Name string `json:"workspaceSlug"`
+	StatusPageID string `json:"id"`
+	WorkspaceID  string `json:"workspaceId"`
+	Subdomain    string `json:"workspaceSlug"`
 }
 
 type PageUpdate struct {
@@ -304,9 +306,12 @@ func (c *Client) CreateStatusPage(page *Page) (*Page, error) {
 
 	// Convert response to PageResponse
 	created := &Page{
-		// TODO: The ID that is returned is actually the workspace ID, not the page ID. I've reached out to Instatus, as their Documentation in their API is wrong.
-		ID:   resp.ID,
-		Name: resp.Name,
+		StatusPageID: resp.StatusPageID,
+		WorkspaceID:  resp.WorkspaceID,
+		Subdomain:    resp.Subdomain,
+		Name:         page.Name,
+		Email:        page.Email,
+		Components:   page.Components,
 	}
 
 	return created, nil
@@ -317,7 +322,7 @@ func (c *Client) GetStatusPage(pageID string) (*Page, error) {
 	// Sadly, Instatus doesn't support individual page retrieval via API yet, however they do have the ability to list all pages
 	// TODO: Reaplce with actual implementation when/if Instatus adds support, in the meantime use custom implementation.
 
-	endpoint := fmt.Sprintf("/api/page/%s", pageID)
+	endpoint := fmt.Sprintf("/api/instatus/pages/%s", pageID)
 
 	respBody, err := c.InDevdoRequest("GET", endpoint, nil)
 	if err != nil {
@@ -330,9 +335,11 @@ func (c *Client) GetStatusPage(pageID string) (*Page, error) {
 	}
 
 	page := &Page{
-		ID:        resp.ID,
-		Name:      resp.Name,
-		Subdomain: resp.Subdomain,
+		StatusPageID: resp.StatusPageID,
+		Name:         resp.Name,
+		Subdomain:    resp.Subdomain,
+		Email:        resp.Email,
+		WorkspaceID: resp.WorkspaceID,
 	}
 
 	return page, nil
@@ -371,10 +378,13 @@ type PageDeleteResponse struct {
 }
 
 // DeleteStatusPage deletes a status page
-func (c *Client) DeleteStatusPage(pageID string) error {
+func (c *Client) DeleteStatusPage(pageID string, workspaceID string) error {
+	// Status Page Deletion
 	endpoint := fmt.Sprintf("/v2/%s", pageID)
 
-	respBody, err := c.doRequest("DELETE", endpoint, nil)
-	println(string(respBody))
+	_, err := c.doRequest("DELETE", endpoint, nil)
+
+	// Workspace Deletion - DELETE /v1/workspaces/:workspace_id
+	_, err = c.doRequest("DELETE", fmt.Sprintf("/v1/workspaces/%s", workspaceID), nil)
 	return err
 }

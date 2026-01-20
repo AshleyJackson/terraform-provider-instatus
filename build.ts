@@ -28,6 +28,15 @@ if (platform === 'windows') {
 }
 if (platform === 'linux') {
   console.log('Building for Linux... (Untested)')
+  const HomeFolder = process.env.HOME || process.env.USERPROFILE
+  const exists = existsSync(`${HomeFolder}/.terraformrc`)
+  if (!exists) {
+    console.warn('Warning: You do not have a ~/.terraformrc file. The built provider may not be picked up by Terraform.')
+  }
+  const localOverride  = await readFileSync(`${HomeFolder}/.terraformrc`, 'utf-8').toString().includes('instatus')
+  if (!localOverride) {
+    console.warn('Warning: You do not have a local override for the provider in your ~/.terraformrc file. The built provider may not be picked up by Terraform.')
+  }
   console.log(`Copying to ${outputDir}...`)
   execSync(`GOOS=linux GOARCH=amd64 go build -o "${outputDir}terraform-provider-instatus"`, { stdio: 'inherit' })
 }

@@ -37,7 +37,7 @@ func resourcePage() *schema.Resource {
 			"workspace_slug": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "Server-generated slug returned by the Instatus API",
+				Description: "Workspace ID returned by the Instatus API",
 			},
 		},
 	}
@@ -57,9 +57,9 @@ func resourcePageCreate(ctx context.Context, d *schema.ResourceData, meta interf
 		return diag.FromErr(fmt.Errorf("error creating status page: %w", err))
 	}
 
-	d.SetId(created.ID)
+	d.SetId(created.StatusPageID)
 
-	if err := d.Set("workspace_slug", created.Name); err != nil {
+	if err := d.Set("workspace_slug", created.WorkspaceID); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -67,7 +67,6 @@ func resourcePageCreate(ctx context.Context, d *schema.ResourceData, meta interf
 }
 
 func resourcePageRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-	// TODO: The public API currently lacks a GET endpoint for pages, so keep state as-is.
 	client := meta.(*Client)
 	var diags diag.Diagnostics
 
@@ -87,7 +86,7 @@ func resourcePageRead(ctx context.Context, d *schema.ResourceData, meta interfac
 	if err := d.Set("subdomain", page.Subdomain); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("workspace_slug", page.ID); err != nil {
+	if err := d.Set("workspace_slug", page.WorkspaceID); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -100,10 +99,9 @@ func resourcePageUpdate(ctx context.Context, d *schema.ResourceData, meta interf
 	pageID := d.Id()
 
 	page := &PageUpdate{
-		Email:      d.Get("email").(string),
-		Name:       d.Get("name").(string),
-		Subdomain:  d.Get("subdomain").(string),
-		Components: d.Get("components").([]Component),
+		Email:     d.Get("email").(string),
+		Name:      d.Get("name").(string),
+		Subdomain: d.Get("subdomain").(string),
 	}
 
 	_, err := client.UpdateStatusPage(pageID, page)
@@ -117,11 +115,11 @@ func resourcePageUpdate(ctx context.Context, d *schema.ResourceData, meta interf
 }
 
 func resourcePageDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-	// TODO: Note. Deleting the Status Page does not delete the workspace. This will have to be manually cleaned up via the Instatus dashboard.
 	client := meta.(*Client)
 	pageID := d.Id()
+	workspaceID := d.Get("workspace_slug").(string)
 
-	err := client.DeleteStatusPage(pageID)
+	err := client.DeleteStatusPage(pageID, workspaceID)
 	if err != nil {
 		return diag.FromErr(fmt.Errorf("error deleting status page: %w", err))
 	}

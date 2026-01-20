@@ -4,6 +4,7 @@ terraform-provider-instatus
 *.dll
 *.so
 *.dylib
+examples/variables.tf
 
 # Test binary
 *.test
