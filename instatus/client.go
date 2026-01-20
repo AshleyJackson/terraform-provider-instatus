@@ -257,7 +257,7 @@ type Page struct {
 	WorkspaceID  string      `json:"workspaceId"`
 	Email        string      `json:"email"`
 	Name         string      `json:"name"`
-	Subdomain    string      `json:"workspaceSlug"`
+	Subdomain    string      `json:"subdomain"`
 	Components   []Component `json:"components"`
 }
 
