@@ -253,7 +253,7 @@ func (c *Client) DeleteComponent(componentID string, pageID string) error {
 // Status Page
 // Status Page represents an Instatus status page
 type Page struct {
-	StatusPageID  string      `json:"id"`
+	ID            string      `json:"id"`
 	WorkspaceID   string      `json:"workspaceId"`
 	Email         string      `json:"email"`
 	Name          string      `json:"name"`
@@ -264,7 +264,7 @@ type Page struct {
 
 // Only 3 fields in the create response
 type PageCreateResponse struct {
-	StatusPageID  string `json:"id"`
+	ID            string `json:"id"`
 	WorkspaceID   string `json:"workspaceId"`
 	WorkspaceSlug string `json:"workspaceSlug"`
 }
@@ -315,7 +315,7 @@ func (c *Client) CreateStatusPage(page *Page) (*Page, error) {
 
 	// Convert PageCreateResponse to Page
 	created := &Page{
-		StatusPageID:  resp.StatusPageID,
+		ID:            resp.ID,
 		WorkspaceID:   resp.WorkspaceID,
 		WorkspaceSlug: resp.WorkspaceSlug,
 		Name:          page.Name,
@@ -343,7 +343,7 @@ func (c *Client) GetStatusPage(pageID string) (*Page, error) {
 
 	// Convert PageGetResponse to Page
 	page := &Page{
-		StatusPageID:  resp.ID,
+		ID:            resp.ID,
 		Name:          resp.Name,
 		WorkspaceSlug: resp.WorkspaceSlug,
 		WorkspaceID:   resp.WorkspaceID,

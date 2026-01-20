@@ -37,6 +37,7 @@ func resourcePage() *schema.Resource {
 			"workspace_id": {
 				Type:        schema.TypeString,
 				Optional:    true,
+				Computed:    true,
 				Description: "Workspace ID returned by the Instatus API",
 			},
 		},
@@ -58,8 +59,7 @@ func resourcePageCreate(ctx context.Context, d *schema.ResourceData, meta interf
 		return diag.FromErr(fmt.Errorf("error creating status page: %w", err))
 	}
 
-	d.SetId(created.StatusPageID)
-
+	d.SetId(created.ID)
 	if err := d.Set("workspace_slug", created.WorkspaceSlug); err != nil {
 		return diag.FromErr(err)
 	}
@@ -100,9 +100,8 @@ func resourcePageUpdate(ctx context.Context, d *schema.ResourceData, meta interf
 	pageID := d.Id()
 
 	page := &PageUpdate{
-		Email:         d.Get("email").(string),
-		Name:          d.Get("name").(string),
-		WorkspaceSlug: d.Get("workspace_slug").(string),
+		Email: d.Get("email").(string),
+		Name:  d.Get("name").(string),
 	}
 
 	_, err := client.UpdateStatusPage(pageID, page)
