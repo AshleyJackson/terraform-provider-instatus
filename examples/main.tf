@@ -13,8 +13,8 @@ provider "instatus" {
 }
 
 resource "instatus_page" "pages" {
-  name      = "MyAffiliates Status Page"
-  email     = "ashley@myaffiliates.com"
-  subdomain = "myaffiliates-status"
+  name           = "MyAffiliates Status Page2"
+  email          = "ashley@myaffiliates.com"
+  workspace_slug = "myaffiliates-status2"
 }
 

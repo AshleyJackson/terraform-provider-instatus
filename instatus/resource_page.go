@@ -29,14 +29,14 @@ func resourcePage() *schema.Resource {
 				Required:    true,
 				Description: "Display name for the status page workspace",
 			},
-			"subdomain": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "Subdomain slug used for the public status page",
-			},
 			"workspace_slug": {
 				Type:        schema.TypeString,
-				Computed:    true,
+				Required:    true,
+				Description: "Workspace ID returned by the Instatus API",
+			},
+			"workspace_id": {
+				Type:        schema.TypeString,
+				Optional:    true,
 				Description: "Workspace ID returned by the Instatus API",
 			},
 		},
@@ -47,9 +47,10 @@ func resourcePageCreate(ctx context.Context, d *schema.ResourceData, meta interf
 	client := meta.(*Client)
 
 	page := &Page{
-		Email:     d.Get("email").(string),
-		Name:      d.Get("name").(string),
-		Subdomain: d.Get("subdomain").(string),
+		Email:       d.Get("email").(string),
+		Name:        d.Get("name").(string),
+		Subdomain:   d.Get("workspace_slug").(string),
+		WorkspaceID: d.Get("workspaceId").(string),
 	}
 
 	created, err := client.CreateStatusPage(page)
@@ -59,7 +60,10 @@ func resourcePageCreate(ctx context.Context, d *schema.ResourceData, meta interf
 
 	d.SetId(created.StatusPageID)
 
-	if err := d.Set("workspace_slug", created.WorkspaceID); err != nil {
+	if err := d.Set("workspace_slug", created.WorkspaceSlug); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("workspaceId", created.WorkspaceID); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -83,10 +87,7 @@ func resourcePageRead(ctx context.Context, d *schema.ResourceData, meta interfac
 	if err := d.Set("name", page.Name); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("subdomain", page.Subdomain); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("workspace_slug", page.WorkspaceID); err != nil {
+	if err := d.Set("workspace_slug", page.WorkspaceSlug); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -99,9 +100,9 @@ func resourcePageUpdate(ctx context.Context, d *schema.ResourceData, meta interf
 	pageID := d.Id()
 
 	page := &PageUpdate{
-		Email:     d.Get("email").(string),
-		Name:      d.Get("name").(string),
-		Subdomain: d.Get("subdomain").(string),
+		Email:         d.Get("email").(string),
+		Name:          d.Get("name").(string),
+		WorkspaceSlug: d.Get("workspace_slug").(string),
 	}
 
 	_, err := client.UpdateStatusPage(pageID, page)
@@ -117,7 +118,7 @@ func resourcePageUpdate(ctx context.Context, d *schema.ResourceData, meta interf
 func resourcePageDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Client)
 	pageID := d.Id()
-	workspaceID := d.Get("workspace_slug").(string)
+	workspaceID := d.Get("workspace_id").(string)
 
 	err := client.DeleteStatusPage(pageID, workspaceID)
 	if err != nil {

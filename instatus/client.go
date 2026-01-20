@@ -253,25 +253,35 @@ func (c *Client) DeleteComponent(componentID string, pageID string) error {
 // Status Page
 // Status Page represents an Instatus status page
 type Page struct {
-	StatusPageID string      `json:"id"`
-	WorkspaceID  string      `json:"workspaceId"`
-	Email        string      `json:"email"`
-	Name         string      `json:"name"`
-	Subdomain    string      `json:"subdomain"`
-	Components   []Component `json:"components"`
+	StatusPageID  string      `json:"id"`
+	WorkspaceID   string      `json:"workspaceId"`
+	Email         string      `json:"email"`
+	Name          string      `json:"name"`
+	WorkspaceSlug string      `json:"workspaceSlug"`
+	Subdomain     string      `json:"subdomain"`
+	Components    []Component `json:"components"`
 }
 
+// Only 3 fields in the create response
 type PageCreateResponse struct {
-	StatusPageID string `json:"id"`
-	WorkspaceID  string `json:"workspaceId"`
-	Subdomain    string `json:"workspaceSlug"`
+	StatusPageID  string `json:"id"`
+	WorkspaceID   string `json:"workspaceId"`
+	WorkspaceSlug string `json:"workspaceSlug"`
+}
+
+// Only 4 fields in the get response
+type PageGetResponse struct {
+	ID            string `json:"id"`
+	WorkspaceID   string `json:"workspaceId"`
+	WorkspaceSlug string `json:"subdomain"`
+	Name          string `json:"name"`
 }
 
 type PageUpdate struct {
-	Email      string      `json:"email"`
-	Name       string      `json:"name"`
-	Subdomain  string      `json:"subdomain"`
-	Components []Component `json:"components"`
+	Email         string      `json:"email"`
+	Name          string      `json:"name"`
+	WorkspaceSlug string      `json:"subdomain"`
+	Components    []Component `json:"components"`
 }
 
 type PageUpdateResponseName struct {
@@ -279,10 +289,9 @@ type PageUpdateResponseName struct {
 	Default string `json:"default"`
 }
 type PageUpdateResponse struct {
-	ID        string `json:"id"`
-	Subdomain string `json:"subdomain"`
-	// Name is the "default" in the name object
-	Name PageUpdateResponseName `json:"name"`
+	ID            string                 `json:"id"`
+	WorkspaceSlug string                 `json:"subdomain"`
+	Name          PageUpdateResponseName `json:"name"`
 }
 
 // CreateStatusPage, GetStatusPage, UpdateStatusPage, DeleteStatusPage
@@ -304,14 +313,14 @@ func (c *Client) CreateStatusPage(page *Page) (*Page, error) {
 		return nil, fmt.Errorf("error unmarshaling response: %w", err)
 	}
 
-	// Convert response to PageResponse
+	// Convert PageCreateResponse to Page
 	created := &Page{
-		StatusPageID: resp.StatusPageID,
-		WorkspaceID:  resp.WorkspaceID,
-		Subdomain:    resp.Subdomain,
-		Name:         page.Name,
-		Email:        page.Email,
-		Components:   page.Components,
+		StatusPageID:  resp.StatusPageID,
+		WorkspaceID:   resp.WorkspaceID,
+		WorkspaceSlug: resp.WorkspaceSlug,
+		Name:          page.Name,
+		Email:         page.Email,
+		Components:    page.Components,
 	}
 
 	return created, nil
@@ -319,8 +328,6 @@ func (c *Client) CreateStatusPage(page *Page) (*Page, error) {
 
 // GetStatusPage retrieves a status page by ID
 func (c *Client) GetStatusPage(pageID string) (*Page, error) {
-	// Sadly, Instatus doesn't support individual page retrieval via API yet, however they do have the ability to list all pages
-	// TODO: Reaplce with actual implementation when/if Instatus adds support, in the meantime use custom implementation.
 
 	endpoint := fmt.Sprintf("/api/instatus/pages/%s", pageID)
 
@@ -329,17 +336,17 @@ func (c *Client) GetStatusPage(pageID string) (*Page, error) {
 		return nil, err
 	}
 
-	var resp Page
+	var resp PageGetResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {
 		return nil, fmt.Errorf("error unmarshaling response: %w", err)
 	}
 
+	// Convert PageGetResponse to Page
 	page := &Page{
-		StatusPageID: resp.StatusPageID,
-		Name:         resp.Name,
-		Subdomain:    resp.Subdomain,
-		Email:        resp.Email,
-		WorkspaceID: resp.WorkspaceID,
+		StatusPageID:  resp.ID,
+		Name:          resp.Name,
+		WorkspaceSlug: resp.WorkspaceSlug,
+		WorkspaceID:   resp.WorkspaceID,
 	}
 
 	return page, nil
@@ -363,10 +370,10 @@ func (c *Client) UpdateStatusPage(pageID string, page *PageUpdate) (*PageUpdate,
 
 	// Convert response to PageUpdate
 	updated := &PageUpdate{
-		Email:      page.Email,
-		Name:       resp.Name.Default,
-		Subdomain:  resp.Subdomain,
-		Components: page.Components,
+		Email:         page.Email,
+		Name:          resp.Name.Default,
+		WorkspaceSlug: resp.WorkspaceSlug,
+		Components:    page.Components,
 	}
 
 	return updated, nil
