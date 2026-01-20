@@ -32,11 +32,11 @@ func resourcePage() *schema.Resource {
 			"workspace_slug": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Workspace ID returned by the Instatus API",
+				ForceNew:    true,
+				Description: "Subdomain/slug for the status page",
 			},
 			"workspace_id": {
 				Type:        schema.TypeString,
-				Optional:    true,
 				Computed:    true,
 				Description: "Workspace ID returned by the Instatus API",
 			},
@@ -48,10 +48,9 @@ func resourcePageCreate(ctx context.Context, d *schema.ResourceData, meta interf
 	client := meta.(*Client)
 
 	page := &Page{
-		Email:       d.Get("email").(string),
-		Name:        d.Get("name").(string),
-		Subdomain:   d.Get("workspace_slug").(string),
-		WorkspaceID: d.Get("workspaceId").(string),
+		Email:     d.Get("email").(string),
+		Name:      d.Get("name").(string),
+		Subdomain: d.Get("workspace_slug").(string),
 	}
 
 	created, err := client.CreateStatusPage(page)
@@ -63,7 +62,7 @@ func resourcePageCreate(ctx context.Context, d *schema.ResourceData, meta interf
 	if err := d.Set("workspace_slug", created.WorkspaceSlug); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("workspaceId", created.WorkspaceID); err != nil {
+	if err := d.Set("workspace_id", created.WorkspaceID); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -88,6 +87,9 @@ func resourcePageRead(ctx context.Context, d *schema.ResourceData, meta interfac
 		return diag.FromErr(err)
 	}
 	if err := d.Set("workspace_slug", page.WorkspaceSlug); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("workspace_id", page.WorkspaceID); err != nil {
 		return diag.FromErr(err)
 	}
 
