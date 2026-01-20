@@ -12,9 +12,16 @@ provider "instatus" {
   api_key = var.instatus_api_key
 }
 
+variable "programs" {
+  type    = list(string)
+  default = ["program1", "program2"]
+}
+
 resource "instatus_page" "pages" {
-  name           = "MyAffiliates Status Page2"
+  for_each = toset(var.programs)
+
   email          = "ashley@myaffiliates.com"
-  workspace_slug = "myaffiliates-status2"
+  workspace_slug = each.value
+  name           = "Instatus Page for ${each.value}"
 }
 
