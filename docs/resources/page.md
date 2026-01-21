@@ -29,10 +29,10 @@ resource "instatus_page" "branded" {
   name           = "My Company Status"
   workspace_slug = "mycompany-status"
   
-  logoUrl         = "https://example.com/logo.png"
-  faviconUrl      = "https://example.com/favicon.ico"
-  customDomain    = "status.mycompany.com"
-  googleAnalytics = "UA-123456789-1"
+  logo_url         = "https://example.com/logo.png"
+  favicon_url      = "https://example.com/favicon.ico"
+  custom_domain    = "status.mycompany.com"
+  google_analytics = "UA-123456789-1"
 }
 ```
 
@@ -65,10 +65,10 @@ The following arguments are supported:
 
 ### Optional
 
-- `logoUrl` (String) - URL of the logo to display on the status page.
-- `faviconUrl` (String) - URL of the favicon for the status page.
-- `googleAnalytics` (String) - Google Analytics tracking ID (e.g., `UA-XXXXXXXXX-X` or `G-XXXXXXXXXX`).
-- `customDomain` (String) - Custom domain for the status page (e.g., `status.example.com`).
+- `logo_url` (String) - URL of the logo to display on the status page.
+- `favicon_url` (String) - URL of the favicon for the status page.
+- `google_analytics` (String) - Google Analytics tracking ID (e.g., `UA-XXXXXXXXX-X` or `G-XXXXXXXXXX`).
+- `custom_domain` (String) - Custom domain for the status page (e.g., `status.example.com`).
 
 ## Attribute Reference
 

@@ -260,10 +260,10 @@ type Page struct {
 	WorkspaceSlug   string      `json:"workspaceSlug"`
 	Subdomain       string      `json:"subdomain"`
 	Components      []Component `json:"components"`
-	LogoURL         string      `json:"logoUrl,omitempty"`
-	FaviconURL      string      `json:"faviconUrl,omitempty"`
-	GoogleAnalytics string      `json:"googleAnalytics,omitempty"`
-	CustomDomain    string      `json:"customDomain,omitempty"`
+	logo_url         string      `json:"logo_url,omitempty"`
+	favicon_url      string      `json:"favicon_url,omitempty"`
+	google_analytics string      `json:"google_analytics,omitempty"`
+	custom_domain    string      `json:"custom_domain,omitempty"`
 }
 
 // Only 3 fields in the create response
@@ -279,10 +279,10 @@ type PageGetResponse struct {
 	WorkspaceID     string `json:"workspaceId"`
 	WorkspaceSlug   string `json:"subdomain"`
 	Name            string `json:"name"`
-	LogoUrl         string `json:"logoUrl,omitempty"`
-	FaviconUrl      string `json:"faviconUrl,omitempty"`
-	GoogleAnalytics string `json:"googleAnalytics,omitempty"`
-	CustomDomain    string `json:"customDomain,omitempty"`
+	logo_url         string `json:"logo_url,omitempty"`
+	favicon_url      string `json:"favicon_url,omitempty"`
+	google_analytics string `json:"google_analytics,omitempty"`
+	custom_domain    string `json:"custom_domain,omitempty"`
 }
 
 type PageUpdate struct {
@@ -290,10 +290,10 @@ type PageUpdate struct {
 	Name            string      `json:"name"`
 	WorkspaceSlug   string      `json:"subdomain"`
 	Components      []Component `json:"components"`
-	LogoURL         string      `json:"logoUrl,omitempty"`
-	FaviconURL      string      `json:"faviconUrl,omitempty"`
-	GoogleAnalytics string      `json:"googleAnalytics,omitempty"`
-	CustomDomain    string      `json:"customDomain,omitempty"`
+	logo_url         string      `json:"logo_url,omitempty"`
+	favicon_url      string      `json:"favicon_url,omitempty"`
+	google_analytics string      `json:"google_analytics,omitempty"`
+	custom_domain    string      `json:"custom_domain,omitempty"`
 }
 
 type PageUpdateResponseName struct {
@@ -304,10 +304,10 @@ type PageUpdateResponse struct {
 	ID              string                 `json:"id"`
 	WorkspaceSlug   string                 `json:"subdomain"`
 	Name            PageUpdateResponseName `json:"name"`
-	LogoUrl         string                 `json:"logoUrl,omitempty"`
-	FaviconUrl      string                 `json:"faviconUrl,omitempty"`
-	GoogleAnalytics string                 `json:"googleAnalytics,omitempty"`
-	CustomDomain    string                 `json:"customDomain,omitempty"`
+	logo_url         string                 `json:"logo_url,omitempty"`
+	favicon_url      string                 `json:"favicon_url,omitempty"`
+	google_analytics string                 `json:"google_analytics,omitempty"`
+	custom_domain    string                 `json:"custom_domain,omitempty"`
 }
 
 // CreateStatusPage, GetStatusPage, UpdateStatusPage, DeleteStatusPage
@@ -337,10 +337,10 @@ func (c *Client) CreateStatusPage(page *Page) (*Page, error) {
 		Name:            page.Name,
 		Email:           page.Email,
 		Components:      page.Components,
-		LogoURL:         page.LogoURL,
-		FaviconURL:      page.FaviconURL,
-		CustomDomain:    page.CustomDomain,
-		GoogleAnalytics: page.GoogleAnalytics,
+		logo_url:         page.logo_url,
+		favicon_url:      page.favicon_url,
+		custom_domain:    page.custom_domain,
+		google_analytics: page.google_analytics,
 	}
 
 	return created, nil
@@ -367,10 +367,10 @@ func (c *Client) GetStatusPage(pageID string) (*Page, error) {
 		Name:            resp.Name,
 		WorkspaceSlug:   resp.WorkspaceSlug,
 		WorkspaceID:     resp.WorkspaceID,
-		LogoURL:         resp.LogoUrl,
-		FaviconURL:      resp.FaviconUrl,
-		GoogleAnalytics: resp.GoogleAnalytics,
-		CustomDomain:    resp.CustomDomain,
+		logo_url:         resp.logo_url,
+		favicon_url:      resp.favicon_url,
+		google_analytics: resp.google_analytics,
+		custom_domain:    resp.custom_domain,
 	}
 
 	return page, nil
@@ -398,10 +398,10 @@ func (c *Client) UpdateStatusPage(pageID string, page *PageUpdate) (*PageUpdate,
 		Name:            resp.Name.Default,
 		WorkspaceSlug:   resp.WorkspaceSlug,
 		Components:      page.Components,
-		LogoURL:         resp.LogoUrl,
-		FaviconURL:      resp.FaviconUrl,
-		GoogleAnalytics: resp.GoogleAnalytics,
-		CustomDomain:    resp.CustomDomain,
+		logo_url:         resp.logo_url,
+		favicon_url:      resp.favicon_url,
+		google_analytics: resp.google_analytics,
+		custom_domain:    resp.custom_domain,
 	}
 
 	return updated, nil
