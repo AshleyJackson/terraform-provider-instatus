@@ -68,9 +68,13 @@ func resourcePageCreate(ctx context.Context, d *schema.ResourceData, meta interf
 	client := meta.(*Client)
 
 	page := &Page{
-		Email:     d.Get("email").(string),
-		Name:      d.Get("name").(string),
-		Subdomain: d.Get("workspace_slug").(string),
+		Email:           d.Get("email").(string),
+		Name:            d.Get("name").(string),
+		Subdomain:       d.Get("workspace_slug").(string),
+		LogoURL:         d.Get("logoUrl").(string),
+		FaviconURL:      d.Get("faviconUrl").(string),
+		GoogleAnalytics: d.Get("googleAnalytics").(string),
+		CustomDomain:    d.Get("customDomain").(string),
 	}
 
 	created, err := client.CreateStatusPage(page)

@@ -282,10 +282,14 @@ type PageGetResponse struct {
 }
 
 type PageUpdate struct {
-	Email         string      `json:"email"`
-	Name          string      `json:"name"`
-	WorkspaceSlug string      `json:"subdomain"`
-	Components    []Component `json:"components"`
+	Email           string      `json:"email"`
+	Name            string      `json:"name"`
+	WorkspaceSlug   string      `json:"subdomain"`
+	Components      []Component `json:"components"`
+	LogoURL         string      `json:"logoUrl,omitempty"`
+	FaviconURL      string      `json:"faviconUrl,omitempty"`
+	GoogleAnalytics string      `json:"googleAnalytics,omitempty"`
+	CustomDomain    string      `json:"customDomain,omitempty"`
 }
 
 type PageUpdateResponseName struct {
@@ -293,9 +297,13 @@ type PageUpdateResponseName struct {
 	Default string `json:"default"`
 }
 type PageUpdateResponse struct {
-	ID            string                 `json:"id"`
-	WorkspaceSlug string                 `json:"subdomain"`
-	Name          PageUpdateResponseName `json:"name"`
+	ID              string                 `json:"id"`
+	WorkspaceSlug   string                 `json:"subdomain"`
+	Name            PageUpdateResponseName `json:"name"`
+	LogoUrl         string                 `json:"logoUrl,omitempty"`
+	FaviconUrl      string                 `json:"faviconUrl,omitempty"`
+	GoogleAnalytics string                 `json:"googleAnalytics,omitempty"`
+	CustomDomain    string                 `json:"customDomain,omitempty"`
 }
 
 // CreateStatusPage, GetStatusPage, UpdateStatusPage, DeleteStatusPage
