@@ -9,6 +9,10 @@ description: |-
 
 The Instatus provider allows you to manage [Instatus](https://instatus.com) status pages and components using Terraform.
 
+## Production Usage
+
+Please note that due to a lack of singular Get Status Pages and Workspaces API, this uses a custom Internal integration that performs this lookup and provides a quick result. Do not use this in production.
+
 ## Example Usage
 
 ```terraform
@@ -34,7 +38,7 @@ The provider requires an API key which can be obtained from your Instatus dashbo
 
 ### Required
 
-* `api_key` - (String, Sensitive) Instatus API key for authentication.
+- `api_key` - (String, Sensitive) Instatus API key for authentication.
 
 ## Resources
 
