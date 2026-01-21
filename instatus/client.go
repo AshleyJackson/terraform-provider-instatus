@@ -333,6 +333,10 @@ func (c *Client) CreateStatusPage(page *Page) (*Page, error) {
 		Name:          page.Name,
 		Email:         page.Email,
 		Components:    page.Components,
+		LogoURL:       page.LogoURL,
+		FaviconURL:    page.FaviconURL,
+		CustomDomain:  page.CustomDomain,
+		GoogleAnalytics: page.GoogleAnalytics,
 	}
 
 	return created, nil
