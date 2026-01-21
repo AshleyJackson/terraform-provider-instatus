@@ -40,22 +40,22 @@ func resourcePage() *schema.Resource {
 				Computed:    true,
 				Description: "Workspace ID returned by the Instatus API",
 			},
-			"logo_url": {
+			"logoUrl": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: "URL of the logo for the status page",
 			},
-			"favicon_url": {
+			"faviconUrl": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: "URL of the favicon for the status page",
 			},
-			"google_analytics": {
+			"googleAnalytics": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: "Google Analytics tracking ID for the status page",
 			},
-			"custom_domain": {
+			"customDomain": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: "Custom domain for the status page",
@@ -68,13 +68,13 @@ func resourcePageCreate(ctx context.Context, d *schema.ResourceData, meta interf
 	client := meta.(*Client)
 
 	page := &Page{
-		Email:           d.Get("email").(string),
-		Name:            d.Get("name").(string),
-		Subdomain:       d.Get("workspace_slug").(string),
-		logo_url:         d.Get("logo_url").(string),
-		favicon_url:      d.Get("favicon_url").(string),
-		google_analytics: d.Get("google_analytics").(string),
-		custom_domain:    d.Get("custom_domain").(string),
+		Email:            d.Get("email").(string),
+		Name:             d.Get("name").(string),
+		Subdomain:        d.Get("workspace_slug").(string),
+		logo_url:         d.Get("logoUrl").(string),
+		favicon_url:      d.Get("faviconUrl").(string),
+		google_analytics: d.Get("googleAnalytics").(string),
+		custom_domain:    d.Get("customDomain").(string),
 	}
 
 	created, err := client.CreateStatusPage(page)

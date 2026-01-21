@@ -253,17 +253,17 @@ func (c *Client) DeleteComponent(componentID string, pageID string) error {
 // Status Page
 // Status Page represents an Instatus status page
 type Page struct {
-	ID              string      `json:"id"`
-	WorkspaceID     string      `json:"workspaceId"`
-	Email           string      `json:"email"`
-	Name            string      `json:"name"`
-	WorkspaceSlug   string      `json:"workspaceSlug"`
-	Subdomain       string      `json:"subdomain"`
-	Components      []Component `json:"components"`
-	logo_url         string      `json:"logo_url,omitempty"`
-	favicon_url      string      `json:"favicon_url,omitempty"`
-	google_analytics string      `json:"google_analytics,omitempty"`
-	custom_domain    string      `json:"custom_domain,omitempty"`
+	ID               string      `json:"id"`
+	WorkspaceID      string      `json:"workspaceId"`
+	Email            string      `json:"email"`
+	Name             string      `json:"name"`
+	WorkspaceSlug    string      `json:"workspaceSlug"`
+	Subdomain        string      `json:"subdomain"`
+	Components       []Component `json:"components"`
+	logo_url         string      `json:"logoUrl,omitempty"`
+	favicon_url      string      `json:"faviconUrl,omitempty"`
+	google_analytics string      `json:"googleAnalytics,omitempty"`
+	custom_domain    string      `json:"customDomain,omitempty"`
 }
 
 // Only 3 fields in the create response
@@ -275,25 +275,25 @@ type PageCreateResponse struct {
 
 // Only 4 fields in the get response
 type PageGetResponse struct {
-	ID              string `json:"id"`
-	WorkspaceID     string `json:"workspaceId"`
-	WorkspaceSlug   string `json:"subdomain"`
-	Name            string `json:"name"`
-	logo_url         string `json:"logo_url,omitempty"`
-	favicon_url      string `json:"favicon_url,omitempty"`
-	google_analytics string `json:"google_analytics,omitempty"`
-	custom_domain    string `json:"custom_domain,omitempty"`
+	ID               string `json:"id"`
+	WorkspaceID      string `json:"workspaceId"`
+	WorkspaceSlug    string `json:"subdomain"`
+	Name             string `json:"name"`
+	LogoURL          string `json:"logoUrl,omitempty"`
+	favicon_url      string `json:"faviconUrl,omitempty"`
+	google_analytics string `json:"googleAnalytics,omitempty"`
+	custom_domain    string `json:"customDomain,omitempty"`
 }
 
 type PageUpdate struct {
-	Email           string      `json:"email"`
-	Name            string      `json:"name"`
-	WorkspaceSlug   string      `json:"subdomain"`
-	Components      []Component `json:"components"`
-	logo_url         string      `json:"logo_url,omitempty"`
-	favicon_url      string      `json:"favicon_url,omitempty"`
-	google_analytics string      `json:"google_analytics,omitempty"`
-	custom_domain    string      `json:"custom_domain,omitempty"`
+	Email            string      `json:"email"`
+	Name             string      `json:"name"`
+	WorkspaceSlug    string      `json:"subdomain"`
+	Components       []Component `json:"components"`
+	logo_url         string      `json:"logoUrl,omitempty"`
+	favicon_url      string      `json:"faviconUrl,omitempty"`
+	google_analytics string      `json:"googleAnalytics,omitempty"`
+	custom_domain    string      `json:"customDomain,omitempty"`
 }
 
 type PageUpdateResponseName struct {
@@ -301,13 +301,13 @@ type PageUpdateResponseName struct {
 	Default string `json:"default"`
 }
 type PageUpdateResponse struct {
-	ID              string                 `json:"id"`
-	WorkspaceSlug   string                 `json:"subdomain"`
-	Name            PageUpdateResponseName `json:"name"`
-	logo_url         string                 `json:"logo_url,omitempty"`
-	favicon_url      string                 `json:"favicon_url,omitempty"`
-	google_analytics string                 `json:"google_analytics,omitempty"`
-	custom_domain    string                 `json:"custom_domain,omitempty"`
+	ID               string                 `json:"id"`
+	WorkspaceSlug    string                 `json:"subdomain"`
+	Name             PageUpdateResponseName `json:"name"`
+	logo_url         string                 `json:"logoUrl,omitempty"`
+	favicon_url      string                 `json:"faviconUrl,omitempty"`
+	google_analytics string                 `json:"googleAnalytics,omitempty"`
+	custom_domain    string                 `json:"customDomain,omitempty"`
 }
 
 // CreateStatusPage, GetStatusPage, UpdateStatusPage, DeleteStatusPage
@@ -331,12 +331,12 @@ func (c *Client) CreateStatusPage(page *Page) (*Page, error) {
 
 	// Convert PageCreateResponse to Page
 	created := &Page{
-		ID:              resp.ID,
-		WorkspaceID:     resp.WorkspaceID,
-		WorkspaceSlug:   resp.WorkspaceSlug,
-		Name:            page.Name,
-		Email:           page.Email,
-		Components:      page.Components,
+		ID:               resp.ID,
+		WorkspaceID:      resp.WorkspaceID,
+		WorkspaceSlug:    resp.WorkspaceSlug,
+		Name:             page.Name,
+		Email:            page.Email,
+		Components:       page.Components,
 		logo_url:         page.logo_url,
 		favicon_url:      page.favicon_url,
 		custom_domain:    page.custom_domain,
@@ -363,10 +363,10 @@ func (c *Client) GetStatusPage(pageID string) (*Page, error) {
 
 	// Convert PageGetResponse to Page
 	page := &Page{
-		ID:              resp.ID,
-		Name:            resp.Name,
-		WorkspaceSlug:   resp.WorkspaceSlug,
-		WorkspaceID:     resp.WorkspaceID,
+		ID:               resp.ID,
+		Name:             resp.Name,
+		WorkspaceSlug:    resp.WorkspaceSlug,
+		WorkspaceID:      resp.WorkspaceID,
 		logo_url:         resp.logo_url,
 		favicon_url:      resp.favicon_url,
 		google_analytics: resp.google_analytics,
@@ -394,10 +394,10 @@ func (c *Client) UpdateStatusPage(pageID string, page *PageUpdate) (*PageUpdate,
 
 	// Convert response to PageUpdate
 	updated := &PageUpdate{
-		Email:           page.Email,
-		Name:            resp.Name.Default,
-		WorkspaceSlug:   resp.WorkspaceSlug,
-		Components:      page.Components,
+		Email:            page.Email,
+		Name:             resp.Name.Default,
+		WorkspaceSlug:    resp.WorkspaceSlug,
+		Components:       page.Components,
 		logo_url:         resp.logo_url,
 		favicon_url:      resp.favicon_url,
 		google_analytics: resp.google_analytics,
