@@ -40,6 +40,26 @@ func resourcePage() *schema.Resource {
 				Computed:    true,
 				Description: "Workspace ID returned by the Instatus API",
 			},
+			"logoUrl": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "URL of the logo for the status page",
+			},
+			"faviconUrl": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "URL of the favicon for the status page",
+			},
+			"googleAnalytics": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "Google Analytics tracking ID for the status page",
+			},
+			"customDomain": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "Custom domain for the status page",
+			},
 		},
 	}
 }
