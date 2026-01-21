@@ -394,10 +394,14 @@ func (c *Client) UpdateStatusPage(pageID string, page *PageUpdate) (*PageUpdate,
 
 	// Convert response to PageUpdate
 	updated := &PageUpdate{
-		Email:         page.Email,
-		Name:          resp.Name.Default,
-		WorkspaceSlug: resp.WorkspaceSlug,
-		Components:    page.Components,
+		Email:           page.Email,
+		Name:            resp.Name.Default,
+		WorkspaceSlug:   resp.WorkspaceSlug,
+		Components:      page.Components,
+		LogoURL:         resp.LogoUrl,
+		FaviconURL:      resp.FaviconUrl,
+		GoogleAnalytics: resp.GoogleAnalytics,
+		CustomDomain:    resp.CustomDomain,
 	}
 
 	return updated, nil
