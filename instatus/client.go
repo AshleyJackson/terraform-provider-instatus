@@ -253,13 +253,17 @@ func (c *Client) DeleteComponent(componentID string, pageID string) error {
 // Status Page
 // Status Page represents an Instatus status page
 type Page struct {
-	ID            string      `json:"id"`
-	WorkspaceID   string      `json:"workspaceId"`
-	Email         string      `json:"email"`
-	Name          string      `json:"name"`
-	WorkspaceSlug string      `json:"workspaceSlug"`
-	Subdomain     string      `json:"subdomain"`
-	Components    []Component `json:"components"`
+	ID              string      `json:"id"`
+	WorkspaceID     string      `json:"workspaceId"`
+	Email           string      `json:"email"`
+	Name            string      `json:"name"`
+	WorkspaceSlug   string      `json:"workspaceSlug"`
+	Subdomain       string      `json:"subdomain"`
+	Components      []Component `json:"components"`
+	LogoURL         string      `json:"logoUrl,omitempty"`
+	FaviconURL      string      `json:"faviconUrl,omitempty"`
+	GoogleAnalytics string      `json:"googleAnalytics,omitempty"`
+	CustomDomain    string      `json:"customDomain,omitempty"`
 }
 
 // Only 3 fields in the create response
