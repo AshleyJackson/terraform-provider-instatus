@@ -275,10 +275,14 @@ type PageCreateResponse struct {
 
 // Only 4 fields in the get response
 type PageGetResponse struct {
-	ID            string `json:"id"`
-	WorkspaceID   string `json:"workspaceId"`
-	WorkspaceSlug string `json:"subdomain"`
-	Name          string `json:"name"`
+	ID              string `json:"id"`
+	WorkspaceID     string `json:"workspaceId"`
+	WorkspaceSlug   string `json:"subdomain"`
+	Name            string `json:"name"`
+	LogoUrl         string `json:"logoUrl,omitempty"`
+	FaviconUrl      string `json:"faviconUrl,omitempty"`
+	GoogleAnalytics string `json:"googleAnalytics,omitempty"`
+	CustomDomain    string `json:"customDomain,omitempty"`
 }
 
 type PageUpdate struct {
@@ -327,15 +331,15 @@ func (c *Client) CreateStatusPage(page *Page) (*Page, error) {
 
 	// Convert PageCreateResponse to Page
 	created := &Page{
-		ID:            resp.ID,
-		WorkspaceID:   resp.WorkspaceID,
-		WorkspaceSlug: resp.WorkspaceSlug,
-		Name:          page.Name,
-		Email:         page.Email,
-		Components:    page.Components,
-		LogoURL:       page.LogoURL,
-		FaviconURL:    page.FaviconURL,
-		CustomDomain:  page.CustomDomain,
+		ID:              resp.ID,
+		WorkspaceID:     resp.WorkspaceID,
+		WorkspaceSlug:   resp.WorkspaceSlug,
+		Name:            page.Name,
+		Email:           page.Email,
+		Components:      page.Components,
+		LogoURL:         page.LogoURL,
+		FaviconURL:      page.FaviconURL,
+		CustomDomain:    page.CustomDomain,
 		GoogleAnalytics: page.GoogleAnalytics,
 	}
 
@@ -359,10 +363,14 @@ func (c *Client) GetStatusPage(pageID string) (*Page, error) {
 
 	// Convert PageGetResponse to Page
 	page := &Page{
-		ID:            resp.ID,
-		Name:          resp.Name,
-		WorkspaceSlug: resp.WorkspaceSlug,
-		WorkspaceID:   resp.WorkspaceID,
+		ID:              resp.ID,
+		Name:            resp.Name,
+		WorkspaceSlug:   resp.WorkspaceSlug,
+		WorkspaceID:     resp.WorkspaceID,
+		LogoURL:         resp.LogoUrl,
+		FaviconURL:      resp.FaviconUrl,
+		GoogleAnalytics: resp.GoogleAnalytics,
+		CustomDomain:    resp.CustomDomain,
 	}
 
 	return page, nil
