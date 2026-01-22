@@ -279,7 +279,7 @@ type PageGetResponse struct {
 	WorkspaceID      string `json:"workspaceId"`
 	WorkspaceSlug    string `json:"subdomain"`
 	Name             string `json:"name"`
-	LogoURL          string `json:"logoUrl,omitempty"`
+	logo_url         string `json:"logoUrl,omitempty"`
 	favicon_url      string `json:"faviconUrl,omitempty"`
 	google_analytics string `json:"googleAnalytics,omitempty"`
 	custom_domain    string `json:"customDomain,omitempty"`
