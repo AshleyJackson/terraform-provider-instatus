@@ -48,4 +48,6 @@ jobs:
           cache: true
 
       - name: Run tests
-        run: go test -v -cover ./...
+        run: |
+          go mod tidy
+          go test -v -cover ./...
